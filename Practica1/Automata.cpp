@@ -12,12 +12,12 @@ class Automata {
 		vector <int> F; // conjunto estados finales
 };
 
-class FinDet { 
+class FinDet : Automata { 
 	public:
 		unordered_map <int, char> f; // función de transición
 };
 
-class NoDet { 
+class NoDet : Automata { 
 	public:
 		unordered_map <int, vector <int> > f; // función de transición
 };
