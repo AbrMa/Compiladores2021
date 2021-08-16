@@ -1,0 +1,18 @@
+1. ¿Qué compilador de lenguaje C++ usaste?
+	g++
+
+2. ¿Qué versión del compilador de lenguaje C++ usaste?
+	Usé la bandera -std=c++14
+	
+3. ¿Qué es el diseño orientado a objetos?
+	Cuando para hacer que en la solución del problema, se describa al problema se usan a las características principales y elementales de las entidades relacionadas al problema para reducirlas a objetos y hacer que estos objetos interactuen con otros.
+
+4. ¿Qué hace un AFD?
+	Nos dice si una cadena pertenece o no a un leguaje, para cada símbolo sabe exactamente a que nuevo estado debe ir.
+
+5. ¿Qué hace un AFN?
+	Sirve también para ver si una cadena pertenece o no a un lenguaje, pero puede tener distintas transiciones para el mismo símbolo.
+
+6. ¿Cuál es tu usuario de github?
+	AbrMa
+	el link es https://github.com/AbrMa/Compiladores2021
