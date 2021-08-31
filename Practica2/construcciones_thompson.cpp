@@ -1,7 +1,24 @@
 #include <iostream>
-using namespace std;
+#include <string>
+
+class ExpresionRegular {
+	std::string expresion;
+	public:
+		ExpresionRegular (std::string expresion) {
+			this -> expresion = expresion;
+		}
+		
+		std::string get_expresion () {
+			return expresion;
+		}
+
+};
 
 int main () {
-	cout << "Hello world" << endl;
+	/*
+	std::string regex;
+	std::cin >> regex;
+	std::cout << regex << std::endl;
+	*/
 	return 0;
 }
