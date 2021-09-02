@@ -70,49 +70,44 @@ class ExpresionRegular {
 			std::string orden_postfijo = "";
 			std::stack<char> operadores;
 
+//			std::cout << "la expresion completa es " << expresion_completa << std::endl;
 			for (char c : expresion_completa) {
-				std::cout << "Procesando " << c << std::endl;
+				//std::cout << "***************\n";
+				//std::cout << "Procesando " << c << std::endl;
 				if (es_operando(c)) {
 					orden_postfijo += c;
 				}
 				else { // es operador
-					if (c == '(') {
+					if (operadores.empty()) {
 						operadores.push(c);
 					}
-					else if (c == ')') {
-						while (operadores.top() != '(') {
-							orden_postfijo += operadores.top();
+					else {
+						if (c == ')') {
+							while (operadores.top() != '(') {
+								orden_postfijo += operadores.top();
+								operadores.pop();
+							}
 							operadores.pop();
 						}
-						operadores.pop();
+						else if (operadores.top() == '(') {
+							operadores.push(c);
+						}
+						else if (precedencia[operadores.top()] >= precedencia[c]) {
+							orden_postfijo += operadores.top();
+							operadores.pop();
+							operadores.push(c);	
+						}	
+						else {
+							operadores.push(c);
+						}
 					}
-					else if (!operadores.empty()) {
-						operadores.push(c);
-					}
-					else if (operadores.top() == '(') {
-						operadores.push(c);
-					}
-					else if (precedencia[operadores.top()] >= precedencia[c]) {
-						orden_postfijo += operadores.top();
-						operadores.pop();
-						operadores.push(c);	
-					}	
-				}
 
-				ps(operadores);
+				}
+//				std::cout << "cadena post -> " << orden_postfijo << std::endl;
+				//ps(operadores);
 			}
 
 			std::cout << orden_postfijo << std:: endl;
-			/*
-			while (!operandos.empty()) {
-				std::cout << operandos.top() << std::endl;
-				operandos.pop();
-			}
-			while (!operadores.empty()) {
-				std::cout << operadores.top() << std::endl;
-				operadores.pop();
-			}
-			*/
 		}
 };
 
