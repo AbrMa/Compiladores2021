@@ -2,6 +2,8 @@
 #include <string>
 #include <stack>
 #include <unordered_map>
+#include <vector>
+#include <utility>
 
 class ExpresionRegular {
 	private:
@@ -55,25 +57,13 @@ class ExpresionRegular {
 			return expresion;
 		}
 
-		void ps (std::stack <char> s) {
-			std::cout << "Pila -> ";
-			while (!s.empty()) {
-				std::cout << s.top() << " ";
-				s.pop();
-			}
-			std::cout << std::endl;
-		}
-
-		void get_subexpresiones () {
+		std::string get_orden_postfijo () {
 			std::unordered_map <char, int> precedencia ({{'*', 3}, {'.', 2}, {'|', 1}});
 			std::string expresion_completa = agregar_concatenacion();
 			std::string orden_postfijo = "";
 			std::stack<char> operadores;
 
-//			std::cout << "la expresion completa es " << expresion_completa << std::endl;
 			for (char c : expresion_completa) {
-				//std::cout << "***************\n";
-				//std::cout << "Procesando " << c << std::endl;
 				if (es_operando(c)) {
 					orden_postfijo += c;
 				}
@@ -103,11 +93,45 @@ class ExpresionRegular {
 					}
 
 				}
-//				std::cout << "cadena post -> " << orden_postfijo << std::endl;
-				//ps(operadores);
 			}
 
-			std::cout << orden_postfijo << std:: endl;
+			return orden_postfijo;
+		}
+};
+
+class construccion_thompson {
+	private:
+		typedef std::vector <std::vector<std::pair<char,int>>> lista_adyacencia;  
+		lista_adyacencia AFN;
+
+		//plantillas
+		lista_adyacencia expresion_E () {
+			return AFN;
+		}
+
+		lista_adyacencia subexpreion_a (char a) {
+			return AFN;
+		}
+
+		lista_adyacencia estrella (lista_adyacencia l1) {
+			return AFN;
+		}
+
+		lista_adyacencia concatenacion (lista_adyacencia l1, lista_adyacencia l2) {
+			return AFN;
+		}
+
+		lista_adyacencia unIon (lista_adyacencia l1, lista_adyacencia l2) {
+			return AFN;
+		}
+
+
+	public:
+		construccion_thompson (ExpresionRegular r) {
+			std::string expresion_postfija = r.get_orden_postfijo();			
+			for (char c: expresion_postfija) {
+
+			}
 		}
 };
 
@@ -115,9 +139,6 @@ int main () {
 	std::string archivo_txt;
 	std::cin >> archivo_txt;
 	ExpresionRegular r(archivo_txt);
-
-	std::cout << r.get_expresion() << std::endl;
-	r.get_subexpresiones();
 
 	return 0;
 }
