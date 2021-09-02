@@ -3,9 +3,6 @@
 #include <stack>
 #include <unordered_map>
 
-//Operadores y su precedencia
-const std::unordered_map <char, int> OPERADORES ({{'(', 4}, {')', 4}, {'*', 3}, {'.', 2}, {'|', 1}});
-
 class ExpresionRegular {
 	private:
 		std::string expresion;
@@ -25,14 +22,6 @@ class ExpresionRegular {
 				return expresion;
 			}
 
-			/*
-			 (a*E)ab(ca|c*d)
-			   ij
-			 (a
-
-    		         (a*E).a.b.(c.a|c*.d)
-
-			 */
 			std::string expresion_con_concatenacion = "";
 			expresion_con_concatenacion += expresion[0];
 
@@ -66,22 +55,54 @@ class ExpresionRegular {
 			return expresion;
 		}
 
-		void get_subexpresiones () {
-			std::string expresion_completa = agregar_concatenacion();
-			std::cout << expresion_completa << std::endl;
-
-			std::stack<char> operandos;
-
-			for (char c : expresion) {
-				// Si c es una letra mínuscula debe ser un operando
-				if (islower(c) || c == 'E') {
-					operandos.push(c);							
-				}
-				else {
-					//operadores.push(c);				
-				}
-
+		void ps (std::stack <char> s) {
+			std::cout << "Pila -> ";
+			while (!s.empty()) {
+				std::cout << s.top() << " ";
+				s.pop();
 			}
+			std::cout << std::endl;
+		}
+
+		void get_subexpresiones () {
+			std::unordered_map <char, int> precedencia ({{'*', 3}, {'.', 2}, {'|', 1}});
+			std::string expresion_completa = agregar_concatenacion();
+			std::string orden_postfijo = "";
+			std::stack<char> operadores;
+
+			for (char c : expresion_completa) {
+				std::cout << "Procesando " << c << std::endl;
+				if (es_operando(c)) {
+					orden_postfijo += c;
+				}
+				else { // es operador
+					if (c == '(') {
+						operadores.push(c);
+					}
+					else if (c == ')') {
+						while (operadores.top() != '(') {
+							orden_postfijo += operadores.top();
+							operadores.pop();
+						}
+						operadores.pop();
+					}
+					else if (!operadores.empty()) {
+						operadores.push(c);
+					}
+					else if (operadores.top() == '(') {
+						operadores.push(c);
+					}
+					else if (precedencia[operadores.top()] >= precedencia[c]) {
+						orden_postfijo += operadores.top();
+						operadores.pop();
+						operadores.push(c);	
+					}	
+				}
+
+				ps(operadores);
+			}
+
+			std::cout << orden_postfijo << std:: endl;
 			/*
 			while (!operandos.empty()) {
 				std::cout << operandos.top() << std::endl;
