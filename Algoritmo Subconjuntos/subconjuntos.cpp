@@ -64,6 +64,31 @@ public:
             } 
         }
     }
+
+    //Cerradura-épsilon
+    set<int> cerradura_epsilon(int estado) {
+        set<int> conjunto;
+        vector<bool> visitado(transcisiones.size(), false);
+        dfs(estado, conjunto, visitado);
+        return conjunto;
+    }
+
+    //Función auxiliar a cerradura para hacer recorrido en el grafo
+    void dfs(int estado, set<int> &conjunto, vector<bool> &visitado) {
+        //Caso base
+        if (visitado[estado]) {
+            return;
+        }
+
+        visitado[estado] = true;
+        conjunto.insert(estado);
+
+        for (Transicion destino : transcisiones[estado]) {
+            if (destino.get_simbolo() == 'E') {
+                dfs(destino.get_estado(), conjunto, visitado);
+            }
+        }
+    }
 };
 
 int main() {
@@ -86,6 +111,10 @@ int main() {
     N.inserta_transicion(7, 'a', 8);
     N.inserta_transicion(8, 'b', 9);
     N.inserta_transicion(9, 'b', 10);
-    N.imprime_transiciones();
+    //N.imprime_transiciones();
+    set<int> res = N.cerradura_epsilon(6);
+    for (auto r : res) {
+        cout << r << endl;
+    }
     return 0;
 }
