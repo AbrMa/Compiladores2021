@@ -11,6 +11,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Transicion {
+    char simbolo;
+    int estado;
+
+public:
+    Transicion(char simbolo, int estado) {
+        this -> simbolo = simbolo;
+        this -> estado = estado;
+    }    
+};
+
 int main() {
+    //AFN 'N' para (a|b)*abb
+
+    vector<vector<Transicion>> N(11);
+    N[0].push_back(Transicion('E', 1)); 
     return 0;
 }
