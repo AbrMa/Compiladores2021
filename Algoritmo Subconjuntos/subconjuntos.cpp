@@ -32,6 +32,35 @@ public:
     }
 };
 
+class Destado {
+    set<int> conjunto;
+    bool marcado;
+
+public:
+    //Constructor
+    Destado(set<int> conjunto, bool marcado) {
+        this -> conjunto = conjunto;
+        this -> marcado = marcado;
+    }
+
+    //Métodos
+    void set_conjunto(set<int> conjunto) {
+        this -> conjunto = conjunto;
+    }
+
+    void set_marcado(bool marcado) {
+        this -> marcado = marcado;
+    }
+
+    set<int> get_conjunto(void) {
+        return conjunto;
+    }
+
+    bool get_marcado(void) {
+        return marcado;
+    }
+};
+
 class AFN {
     set<int> estados;
     set<char> alfabeto;
@@ -102,6 +131,12 @@ public:
         }
         return conjunto;
     }
+
+    void subconjuntos(void) {
+        set<set<int>> d_estados;
+        vector<bool> visitado(1,false);
+        d_estados.insert(cerradura_epsilon(estado_inicial));
+    }
 };
 
 int main() {
@@ -126,9 +161,11 @@ int main() {
     N.inserta_transicion(9, 'b', 10);
     //N.imprime_transiciones();
     set<int> T = N.cerradura_epsilon(6);
-    set<int> mover = N.mover(T,'b');
+    set<int> mover = N.mover({1,2,3,4,6,7,8},'b');
+    /*
     for (auto r : mover) {
         cout << r << endl;
     }
+    */
     return 0;
 }
