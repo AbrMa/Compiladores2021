@@ -132,10 +132,26 @@ public:
         return conjunto;
     }
 
+    //Función que genera tabla de transición 
     void subconjuntos(void) {
-        set<set<int>> d_estados;
-        vector<bool> visitado(1,false);
-        d_estados.insert(cerradura_epsilon(estado_inicial));
+        vector<Destado> d_estados;
+        d_estados.push_back(Destado(cerradura_epsilon(estado_inicial), false));
+
+        while(primero_sin_marcar(d_estados) == -1) {
+
+        }
+    }
+
+    //Función auxiliar de subconjuntos() que nos regresa el índice de el primer
+    //estado sin marcar, si ya están procesados todos los estados regresa -1
+    int primero_sin_marcar(vector<Destado> &d_estados){
+        for (int i = 0; i < d_estados.size(); i++) {
+            if (d_estados[i].get_marcado() == false) {
+                return i;
+            }
+        }
+        //No se encontró ningún estado sin marcar
+        return -1;
     }
 };
 
