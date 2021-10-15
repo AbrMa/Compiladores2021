@@ -22,11 +22,6 @@ public:
         this -> estado = estado;
     }    
 
-    Transicion(int estado, int simbolo) {
-        this -> simbolo = simbolo;
-        this -> estado = estado;
-    }    
-
     //Métodos
     char get_simbolo(void) {
         return simbolo;
