@@ -153,7 +153,7 @@ public:
         while(actual != -1) {
             d_estados[actual].set_marcado(true);
             for (char a : alfabeto) {
-
+                set<int> U = cerradura_epsilon(mover(d_estados[actual].get_conjunto(), a));
             }
             actual = primero_sin_marcar(d_estados);
         }
@@ -169,6 +169,11 @@ public:
         }
         //No se encontró ningún estado sin marcar
         return -1;
+    }
+    //Función auxiliar de subconjuntos() que nos dice si estado U se encuentra
+    //en los estados procesados
+    bool esta_en(set<int> &U, vector<Destado> &d_estados){
+        return false;
     }
 };
 
@@ -193,12 +198,14 @@ int main() {
     N.inserta_transicion(8, 'b', 9);
     N.inserta_transicion(9, 'b', 10);
     //N.imprime_transiciones();
-    set<int> T = N.cerradura_epsilon(6);
-    set<int> mover = N.mover({1,2,3,4,6,7,8},'b');
+    //set<int> T = N.cerradura_epsilon(6);
+    set<int> T = N.cerradura_epsilon({5});
+    //set<int> mover = N.mover({1,2,3,4,6,7,8},'b');
     /*
-    for (auto r : mover) {
-        cout << r << endl;
+    for (auto r : T) {
+        cout << r << " ";
     }
+    cout << endl;
     */
     return 0;
 }
