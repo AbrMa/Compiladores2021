@@ -126,6 +126,18 @@ public:
     }
 };
 
+class AFD : public Automata {
+public:
+    //Constructores
+    AFD(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion)
+        : Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
+    }
+
+    AFD(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) 
+        : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
+    }
+};
+
 class AFN : public Automata {
 public:
     //Constructor
@@ -138,22 +150,18 @@ public:
     }
 
     //Métodos
-
     //Convierte un AFN en un AFD
-    void subconjuntos(void) { 
+    AFD subconjuntos(void) { 
         set<int> aceptacion;
-
         vector<vector<Transicion>> d_tran = tabla_transicion(aceptacion);
-        
         set<int> estados;
         for (int i = 0; i < d_tran.size(); i++) {
             estados.insert(i);
         }
+        set<char> alfabeto = get_alfabeto();
 
-
-        //AFD resultado;// = AFD();
-
-        //return resultado;   
+        AFD resultado = AFD(estados, alfabeto, d_tran, 0, aceptacion);
+        return resultado;   
     }
 
 private:
@@ -313,18 +321,6 @@ private:
         cout << elemento << " ";
     }
     cout << "}" <<endl;
-    }
-};
-
-class AFD : public Automata {
-public:
-    //Constructores
-    AFD(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion)
-        : Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
-    }
-
-    AFD(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) 
-        : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
     }
 };
 
