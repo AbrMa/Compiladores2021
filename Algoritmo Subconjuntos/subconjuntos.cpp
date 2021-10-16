@@ -1,6 +1,6 @@
 /*
     Descripción : 
-        La construcción de subconjuntos de un AFD, a partir de un AFN.
+        La construcción de subconjuntos de un AFD, a partir de un Automata.
 
     Entrada:
         Un AFN 'N'.
@@ -61,45 +61,73 @@ public:
     }
 };
 
-class AFN {
+class Automata {
     set<int> estados;
     set<char> alfabeto;
-    vector<vector<Transicion>> transcisiones;
+    vector<vector<Transicion>> transiciones;
     int estado_inicial;
     set<int> estados_aceptacion;
 
 public:
     //constructor
-    AFN(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) {
+    Automata(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) {
         this->estados = estados;
         this->alfabeto = alfabeto;
         this->estado_inicial = estado_inicial;
         this->estados_aceptacion = estados_aceptacion;
-        transcisiones.resize(estados.size());
+        transiciones.resize(estados.size());
     }
 
     //Métodos
+    set<int> get_estados(void) {
+        return estados;
+    }
+
+    set<char> get_alfabeto(void) {
+        return alfabeto;
+    }
+
+    vector<vector<Transicion>> get_transiciones(void) {
+        return transiciones;
+    }
+
+    int get_estado_inicial(void) {
+        return estado_inicial;
+    }
+
+    set<int> get_estados_aceptacion(void) {
+        return estados_aceptacion;
+    }
+
     void inserta_transicion(int origen, char simbolo, int destino) {
         //origen ---simbolo---> destino
-        transcisiones[origen].push_back(Transicion(simbolo, destino));
+        transiciones[origen].push_back(Transicion(simbolo, destino));
     }
 
     void imprime_transiciones(void) {
-        for (int i = 0; i < transcisiones.size(); i++)
+        for (int i = 0; i < transiciones.size(); i++)
         {
             cout << "Estando en " << i << " puedo ir a :" << endl;
-            for (int j = 0; j < transcisiones[i].size(); j++)
+            for (int j = 0; j < transiciones[i].size(); j++)
             {
-                cout << "\t" << transcisiones[i][j].get_estado() << " con '";
-                cout << transcisiones[i][j].get_simbolo() << "'" << endl;
+                cout << "\t" << transiciones[i][j].get_estado() << " con '";
+                cout << transiciones[i][j].get_simbolo() << "'" << endl;
             }
         }
     }
+};
 
+class AFN : public Automata {
+public:
+    //Constructor
+    AFN (set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) 
+        :Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
+    }
     //Cerradura-épsilon(s) s es un estado
     set<int> cerradura_epsilon(int estado) {
         set<int> conjunto;
-        vector<bool> visitado(transcisiones.size(), false);
+        vector<vector<Transicion>> aux_t = get_transiciones();
+        vector<bool> visitado(aux_t.size(), false);
         dfs(estado, conjunto, visitado);
         return conjunto;
     }
@@ -122,11 +150,11 @@ public:
         if (visitado[estado]) {
             return;
         }
-
         visitado[estado] = true;
         conjunto.insert(estado);
 
-        for (Transicion destino : transcisiones[estado]) {
+        vector<vector<Transicion>> aux_t = get_transiciones();
+        for (Transicion destino : aux_t[estado]) {
             if (destino.get_simbolo() == 'E') {
                 dfs(destino.get_estado(), conjunto, visitado);
             }
@@ -136,8 +164,9 @@ public:
     //Mover(T,a)
     set<int> mover(set<int> T, char simbolo) {
         set<int> conjunto;
+        vector<vector<Transicion>> aux_t = get_transiciones();
         for (int elemento : T) {
-            for (Transicion destino : transcisiones[elemento]) {
+            for (Transicion destino : aux_t[elemento]) {
                 if (destino.get_simbolo() == simbolo) {
                     conjunto.insert(destino.get_estado());
                 }
@@ -150,16 +179,16 @@ public:
     void subconjuntos(void) {
         vector<vector<Transicion>> lista_adyacencia;
 
-
         vector<Destado> d_estados;
-        d_estados.push_back(Destado(cerradura_epsilon(estado_inicial), false));
+        set<int> aux = cerradura_epsilon(get_estado_inicial());
+        d_estados.push_back(Destado(aux, false));
         int actual = primero_sin_marcar(d_estados);
 
         while (actual != -1) {
             //cout << "El actual está en la pos " << actual << " : "; 
             //imprime_conjunto(d_estados[actual].get_conjunto());
             d_estados[actual].set_marcado(true);
-            for (char a : alfabeto) {
+            for (char a : get_alfabeto()) {
                 //cout << "\tcuando proceso '" << a << "' me lleva a";
                 //set<int> mov = mover(d_estados[actual].get_conjunto(), a);
                 //imprime_conjunto(mov);
@@ -181,13 +210,20 @@ public:
             actual = primero_sin_marcar(d_estados);
         }
 
+        /*
+        cout << "digraph finite_state_machine { \n";
+        cout << "\trankdir = LR;\n\tnode [shape = circle];\n";
         for(int i = 0; i < lista_adyacencia.size(); i++) {
-            cout << i << " : " << endl;
             for (int j = 0; j < lista_adyacencia[i].size(); j++) {
-                cout << "  " << lista_adyacencia[i][j].get_simbolo() << "->" <<lista_adyacencia[i][j].get_estado() << endl;
+                cout << "\t" <<  i << " -> ";
+                cout << lista_adyacencia[i][j].get_estado() << " [label = \"" <<lista_adyacencia[i][j].get_simbolo() <<"\"];" <<  endl;
             }
         }
+        cout << "}";
+        cout << endl;
+        */
     }
+
 
     //Función auxiliar de subconjuntos() que nos regresa el índice de el primer
     //estado sin marcar, si ya están procesados todos los estados regresa -1
@@ -233,8 +269,6 @@ public:
     cout << "}" <<endl;
     }
 };
-
-
 
 int main() {
     //AFN 'N' para (a|b)*abb
