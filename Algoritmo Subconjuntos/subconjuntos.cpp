@@ -114,7 +114,7 @@ public:
     }
 
     void imprime_transiciones(void) {
-        cout << "digraph finite_state_machine { \n";
+        cout << "digraph automata { \n";
 
         cout << "\trankdir = LR;\n\tnode [shape = doublecircle]; ";
         for (int elemento : estados_aceptacion) {
@@ -129,17 +129,24 @@ public:
         }
         cout << "}";
         cout << endl;
-        /*
+    }
 
-        for(int i = 0; i < lista_adyacencia.size(); i++) {
-            for (int j = 0; j < lista_adyacencia[i].size(); j++) {
-                cout << "\t" <<  i << " -> ";
-                cout << lista_adyacencia[i][j].get_estado() << " [label = \"" <<lista_adyacencia[i][j].get_simbolo() <<"\"];" <<  endl;
+    void escribe_archivo(ofstream &archivo) {
+        archivo << "digraph automata { \n";
+
+        archivo << "\trankdir = LR;\n\tnode [shape = doublecircle]; ";
+        for (int elemento : estados_aceptacion) {
+            archivo << elemento << " ";
+        }
+        archivo << ";\n\tnode [shape = circle];\n";
+        for (int i = 0; i < transiciones.size(); i++) {
+            for (int j = 0; j < transiciones[i].size(); j++) {
+                archivo << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
+                archivo << transiciones[i][j].get_simbolo() << "\"];" << endl;
             }
         }
-        cout << "}";
-        cout << endl;
-        */
+        archivo << "}";
+        archivo << endl;
     }
 };
 
@@ -317,14 +324,6 @@ private:
         }
         return false;
     }
-    //ELIMINAR
-    void imprime_conjunto(set<int> conjunto) {
-    cout << "{";
-    for (int elemento : conjunto) {
-        cout << elemento << " ";
-    }
-    cout << "}" <<endl;
-    }
 };
 
 int main() {
@@ -348,16 +347,16 @@ int main() {
     N.inserta_transicion(8, 'b', 9);
     N.inserta_transicion(9, 'b', 10);
     N.imprime_transiciones();
-    //set<int> T = N.cerradura_epsilon(6);
-    //set<int> T = N.cerradura_epsilon({5});
-    //set<int> mover = N.mover({0,1,2,4,7},'b');
-    //set<int> mover = N.mover({1,2,4,5,6,7},'b');
-    /*
-    for (auto r : mover) {
-        cout << r << " ";
-    }
-    cout << endl;
-    */
-    //N.subconjuntos();
+    AFD D = N.subconjuntos();
+    D.imprime_transiciones(); 
+
+    //Archivos
+    ofstream entrada("entrada.dot");
+    N.escribe_archivo(entrada);
+    entrada.close();
+
+    ofstream salida("salida.dot");
+    D.escribe_archivo(salida);
+    salida.close();
     return 0;
 }
