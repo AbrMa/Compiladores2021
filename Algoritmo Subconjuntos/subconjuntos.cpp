@@ -94,11 +94,23 @@ public:
         }
     }
 
-    //Cerradura-épsilon(s)
+    //Cerradura-épsilon(s) s es un estado
     set<int> cerradura_epsilon(int estado) {
         set<int> conjunto;
         vector<bool> visitado(transcisiones.size(), false);
         dfs(estado, conjunto, visitado);
+        return conjunto;
+    }
+
+    //Cerradura-épsilon(T) T es un conjunto
+    set<int> cerradura_epsilon(set<int> T) {
+        set<int> conjunto;
+        for (int elemento : T) {
+            set<int> conjunto_auxiliar = cerradura_epsilon(elemento);
+            for (int elemento_auxiliar : conjunto_auxiliar) {
+                conjunto.insert(elemento_auxiliar);
+            }
+        }
         return conjunto;
     }
 
@@ -136,9 +148,14 @@ public:
     void subconjuntos(void) {
         vector<Destado> d_estados;
         d_estados.push_back(Destado(cerradura_epsilon(estado_inicial), false));
+        int actual = primero_sin_marcar(d_estados);
+        
+        while(actual != -1) {
+            d_estados[actual].set_marcado(true);
+            for (char a : alfabeto) {
 
-        while(primero_sin_marcar(d_estados) == -1) {
-
+            }
+            actual = primero_sin_marcar(d_estados);
         }
     }
 
