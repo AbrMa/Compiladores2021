@@ -114,15 +114,32 @@ public:
     }
 
     void imprime_transiciones(void) {
-        for (int i = 0; i < transiciones.size(); i++)
-        {
-            cout << "Estando en " << i << " puedo ir a :" << endl;
-            for (int j = 0; j < transiciones[i].size(); j++)
-            {
-                cout << "\t" << transiciones[i][j].get_estado() << " con '";
-                cout << transiciones[i][j].get_simbolo() << "'" << endl;
+        cout << "digraph finite_state_machine { \n";
+
+        cout << "\trankdir = LR;\n\tnode [shape = doublecircle]; ";
+        for (int elemento : estados_aceptacion) {
+            cout << elemento << " ";
+        }
+        cout << ";\n\tnode [shape = circle];\n";
+        for (int i = 0; i < transiciones.size(); i++) {
+            for (int j = 0; j < transiciones[i].size(); j++) {
+                cout << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
+                cout << transiciones[i][j].get_simbolo() << "\"];" << endl;
             }
         }
+        cout << "}";
+        cout << endl;
+        /*
+
+        for(int i = 0; i < lista_adyacencia.size(); i++) {
+            for (int j = 0; j < lista_adyacencia[i].size(); j++) {
+                cout << "\t" <<  i << " -> ";
+                cout << lista_adyacencia[i][j].get_estado() << " [label = \"" <<lista_adyacencia[i][j].get_simbolo() <<"\"];" <<  endl;
+            }
+        }
+        cout << "}";
+        cout << endl;
+        */
     }
 };
 
@@ -252,20 +269,6 @@ private:
             }
             actual = primero_sin_marcar(d_estados);
         }
-
-        /*
-        cout << "digraph finite_state_machine { \n";
-        cout << "\trankdir = LR;\n\tnode [shape = circle];\n";
-        for(int i = 0; i < lista_adyacencia.size(); i++) {
-            for (int j = 0; j < lista_adyacencia[i].size(); j++) {
-                cout << "\t" <<  i << " -> ";
-                cout << lista_adyacencia[i][j].get_estado() << " [label = \"" <<lista_adyacencia[i][j].get_simbolo() <<"\"];" <<  endl;
-            }
-        }
-        cout << "}";
-        cout << endl;
-        */
-
        return lista_adyacencia;
     }
 
@@ -344,7 +347,7 @@ int main() {
     N.inserta_transicion(7, 'a', 8);
     N.inserta_transicion(8, 'b', 9);
     N.inserta_transicion(9, 'b', 10);
-    //N.imprime_transiciones();
+    N.imprime_transiciones();
     //set<int> T = N.cerradura_epsilon(6);
     //set<int> T = N.cerradura_epsilon({5});
     //set<int> mover = N.mover({0,1,2,4,7},'b');
