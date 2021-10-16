@@ -62,6 +62,7 @@ public:
 };
 
 class Automata {
+private:
     set<int> estados;
     set<char> alfabeto;
     vector<vector<Transicion>> transiciones;
@@ -69,7 +70,15 @@ class Automata {
     set<int> estados_aceptacion;
 
 public:
-    //constructor
+    //constructores
+    Automata(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) {
+        this->estados = estados;
+        this->alfabeto = alfabeto;
+        this->transiciones = transiciones;
+        this->estado_inicial = estado_inicial;
+        this->estados_aceptacion = estados_aceptacion;
+    }
+
     Automata(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) {
         this->estados = estados;
         this->alfabeto = alfabeto;
@@ -99,7 +108,7 @@ public:
         return estados_aceptacion;
     }
 
-    void inserta_transicion(int origen, char simbolo, int destino) {
+    virtual void inserta_transicion(int origen, char simbolo, int destino) {
         //origen ---simbolo---> destino
         transiciones[origen].push_back(Transicion(simbolo, destino));
     }
@@ -123,6 +132,31 @@ public:
     AFN (set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) 
         :Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
     }
+
+    AFN(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) 
+        : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
+    }
+
+    //Métodos
+
+    //Convierte un AFN en un AFD
+    void subconjuntos(void) { 
+        set<int> aceptacion;
+
+        vector<vector<Transicion>> d_tran = tabla_transicion(aceptacion);
+        
+        set<int> estados;
+        for (int i = 0; i < d_tran.size(); i++) {
+            estados.insert(i);
+        }
+
+
+        //AFD resultado;// = AFD();
+
+        //return resultado;   
+    }
+
+private:
     //Cerradura-épsilon(s) s es un estado
     set<int> cerradura_epsilon(int estado) {
         set<int> conjunto;
@@ -176,9 +210,8 @@ public:
     }
 
     //Función que genera tabla de transición
-    void subconjuntos(void) {
+    vector<vector<Transicion>> tabla_transicion(set<int> &aceptacion) {
         vector<vector<Transicion>> lista_adyacencia;
-
         vector<Destado> d_estados;
         set<int> aux = cerradura_epsilon(get_estado_inicial());
         d_estados.push_back(Destado(aux, false));
@@ -205,7 +238,9 @@ public:
                     lista_adyacencia.resize(d_estados.size());
                 }
                 lista_adyacencia[actual].push_back(Transicion(a, siguiente));
-
+                if (es_de_aceptacion(d_estados[actual].get_conjunto())) {
+                    aceptacion.insert(actual);
+                }
             }
             actual = primero_sin_marcar(d_estados);
         }
@@ -222,10 +257,11 @@ public:
         cout << "}";
         cout << endl;
         */
+
+       return lista_adyacencia;
     }
 
-
-    //Función auxiliar de subconjuntos() que nos regresa el índice de el primer
+    //Función auxiliar de tabla_transicion() que nos regresa el índice de el primer
     //estado sin marcar, si ya están procesados todos los estados regresa -1
     int primero_sin_marcar(vector<Destado> &d_estados) {
         for (int i = 0; i < d_estados.size(); i++) {
@@ -237,7 +273,7 @@ public:
         return -1;
     }
 
-    //Función auxiliar de subconjuntos() que nos dice si estado U se encuentra
+    //Función auxiliar de tabla_transicion() que nos dice si estado U se encuentra
     //en los estados procesados
     bool esta_en(set<int> &U, vector<Destado> &d_estados) {
         for (Destado d : d_estados) {
@@ -248,7 +284,7 @@ public:
         return false;
     }
 
-    //Función auxiliar de subconjuntos() que indica el índice del conjunto U en 
+    //Función auxiliar de tabla_transicion() que indica el índice del conjunto U en 
     //el vector de d_estados, si no topa al conjunto U regresa -1
     int idx_conjunto(set<int> &U, vector<Destado> &d_estados) {
         for (int i = 0; i < d_estados.size(); i++) {
@@ -260,6 +296,16 @@ public:
         return -1;
     }
 
+    //Función auxiliar de tabla_transicion() que nos dice si U es un estado de aceptación o no
+    bool es_de_aceptacion(set<int> U) {
+        set<int> aceptacion = get_estados_aceptacion();
+        for (int u: U) {
+            if (aceptacion.count(u) > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
     //ELIMINAR
     void imprime_conjunto(set<int> conjunto) {
     cout << "{";
@@ -267,6 +313,18 @@ public:
         cout << elemento << " ";
     }
     cout << "}" <<endl;
+    }
+};
+
+class AFD : public Automata {
+public:
+    //Constructores
+    AFD(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion)
+        : Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
+    }
+
+    AFD(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) 
+        : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
     }
 };
 
@@ -301,6 +359,6 @@ int main() {
     }
     cout << endl;
     */
-    N.subconjuntos();
+    //N.subconjuntos();
     return 0;
 }
