@@ -1,12 +1,13 @@
 /*
     Descripción : 
-        La construcción de subconjuntos de un AFD, a partir de un Automata.
+        Minimización del número de estados de un AFD.
 
     Entrada:
-        Un AFN 'N'.
+        Un AFD 'D'.
 
     Salida:
-        Un AFD 'D' que acepta el mismo lenguaje que N.    
+        Un AFD 'D' que acepta el mismo lenguaje que D y tiene 
+        el menor número de estados posible.
 */
 #include <bits/stdc++.h>
 using namespace std;
@@ -135,9 +136,13 @@ public:
     AFD(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) 
         : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
     }
+
+    //Función de minimización de estados
+    
 };
 
 
 int main() {
+
     return 0;
 }
