@@ -120,7 +120,9 @@ public:
         for (int elemento : estados_aceptacion) {
             cout << elemento << " ";
         }
+        cout << "\nnode [shape = point ]; inicial\n";
         cout << ";\n\tnode [shape = circle];\n";
+        cout << "inicial -> 0;\n";
         for (int i = 0; i < transiciones.size(); i++) {
             for (int j = 0; j < transiciones[i].size(); j++) {
                 cout << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
@@ -138,7 +140,9 @@ public:
         for (int elemento : estados_aceptacion) {
             archivo << elemento << " ";
         }
+        archivo << "\nnode [shape = point ]; inicial\n";
         archivo << ";\n\tnode [shape = circle];\n";
+        archivo << "inicial -> 0;\n";
         for (int i = 0; i < transiciones.size(); i++) {
             for (int j = 0; j < transiciones[i].size(); j++) {
                 archivo << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
