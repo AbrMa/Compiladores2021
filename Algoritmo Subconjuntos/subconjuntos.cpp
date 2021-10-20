@@ -9,28 +9,9 @@
         Un AFD 'D' que acepta el mismo lenguaje que N.    
 */
 #include <bits/stdc++.h>
+#include "Transicion.hpp"
+
 using namespace std;
-
-class Transicion {
-    char simbolo;
-    int estado;
-
-public:
-    //Constructores
-    Transicion(char simbolo, int estado) {
-        this->simbolo = simbolo;
-        this->estado = estado;
-    }
-
-    //Métodos
-    char get_simbolo(void) {
-        return simbolo;
-    }
-
-    int get_estado(void) {
-        return estado;
-    }
-};
 
 class Destado {
     set<int> conjunto;
@@ -262,7 +243,6 @@ private:
                 //set<int> mov = mover(d_estados[actual].get_conjunto(), a);
                 //imprime_conjunto(mov);
                 set<int> U = cerradura_epsilon(mover(d_estados[actual].get_conjunto(), a));
-                //cout << "ya el vergas debe ser " ;
                 //imprime_conjunto(U);
                 if (!esta_en(U, d_estados)) {
                     d_estados.push_back(Destado(U, false));
