@@ -9,8 +9,7 @@
         Un AFD 'D' que acepta el mismo lenguaje que N.    
 */
 #include <bits/stdc++.h>
-#include "AFD.hpp"
-#include "AFN.hpp"
+#include "Automata.hpp"
 
 using namespace std;
 
