@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include "Automata.hpp"
+#include "Destado.hpp"
 #include "AFD.hpp"
 
 using namespace std;
