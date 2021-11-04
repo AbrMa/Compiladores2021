@@ -6,13 +6,11 @@ class Destado {
     bool marcado;
 
 public:
-    //Constructor
     Destado(set<int> conjunto, bool marcado) {
         this->conjunto = conjunto;
         this->marcado = marcado;
     }
 
-    //Métodos
     void set_conjunto(set<int> conjunto) {
         this->conjunto = conjunto;
     }
