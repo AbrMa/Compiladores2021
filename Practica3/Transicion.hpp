@@ -3,13 +3,11 @@ class Transicion {
     int estado;
 
 public:
-    //Constructores
     Transicion(char simbolo, int estado) {
         this->simbolo = simbolo;
         this->estado = estado;
     }
 
-    //Métodos
     char get_simbolo(void) {
         return simbolo;
     }
