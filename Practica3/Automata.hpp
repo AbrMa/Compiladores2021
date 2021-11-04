@@ -13,7 +13,6 @@ private:
     set<int> estados_aceptacion;
 
 public:
-    //constructores
     Automata(set<int> estados, set<char> alfabeto, vector<vector<Transicion>> transiciones,int estado_inicial, set<int> estados_aceptacion) {
         this->estados = estados;
         this->alfabeto = alfabeto;
@@ -30,7 +29,6 @@ public:
         transiciones.resize(estados.size());
     }
 
-    //Métodos
     set<int> get_estados(void) {
         return estados;
     }
@@ -99,7 +97,6 @@ public:
 
 class AFD : public Automata {
 public:
-    //Constructores
     AFD(set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion)
         : Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
     }
@@ -111,7 +108,6 @@ public:
 
 class AFN : public Automata {
 public:
-    //Constructor
     AFN (set<int> estados, set<char> alfabeto, int estado_inicial, set<int> estados_aceptacion) 
         :Automata(estados, alfabeto, estado_inicial, estados_aceptacion) {
     }
@@ -120,7 +116,6 @@ public:
         : Automata(estados, alfabeto, transiciones, estado_inicial, estados_aceptacion) {
     }
 
-    //Métodos
     //Convierte un AFN en un AFD
     AFD subconjuntos(void) { 
         set<int> aceptacion;
@@ -159,7 +154,6 @@ private:
 
     //Función auxiliar para hacer recorridos en el grafo
     void dfs(int estado, set<int> &conjunto, vector<bool> &visitado) {
-        //Caso base
         if (visitado[estado]) {
             return;
         }
@@ -197,20 +191,12 @@ private:
         int actual = primero_sin_marcar(d_estados);
 
         while (actual != -1) {
-            //cout << "El actual está en la pos " << actual << " : "; 
-            //imprime_conjunto(d_estados[actual].get_conjunto());
             d_estados[actual].set_marcado(true);
             for (char a : get_alfabeto()) {
-                //cout << "\tcuando proceso '" << a << "' me lleva a";
-                //set<int> mov = mover(d_estados[actual].get_conjunto(), a);
-                //imprime_conjunto(mov);
                 set<int> U = cerradura_epsilon(mover(d_estados[actual].get_conjunto(), a));
-                //imprime_conjunto(U);
                 if (!esta_en(U, d_estados)) {
                     d_estados.push_back(Destado(U, false));
                 }
-
-                //armar tabla
                 int siguiente = idx_conjunto(U, d_estados);
                 if (lista_adyacencia.size() < d_estados.size()) {
                     lista_adyacencia.resize(d_estados.size());
