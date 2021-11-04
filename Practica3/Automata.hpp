@@ -64,8 +64,8 @@ public:
         cout << "\n\tnode [shape = point ]; inicial;\n";
         cout << "\n\tnode [shape = circle];\n";
         cout << "inicial -> 0;\n";
-        for (int i = 0; i < transiciones.size(); i++) {
-            for (int j = 0; j < transiciones[i].size(); j++) {
+        for (int i = 0; (unsigned)i < transiciones.size(); i++) {
+            for (int j = 0; (unsigned)j < transiciones[i].size(); j++) {
                 cout << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
                 cout << transiciones[i][j].get_simbolo() << "\"];" << endl;
             }
@@ -84,8 +84,8 @@ public:
         archivo << "\n\tnode [shape = point ]; inicial;\n";
         archivo << "\n\tnode [shape = circle];\n";
         archivo << "inicial -> 0;\n";
-        for (int i = 0; i < transiciones.size(); i++) {
-            for (int j = 0; j < transiciones[i].size(); j++) {
+        for (int i = 0; (unsigned)i < transiciones.size(); i++) {
+            for (int j = 0; (unsigned)j < transiciones[i].size(); j++) {
                 archivo << "\t" << i << " -> " << transiciones[i][j].get_estado() << " [label = \"";
                 archivo << transiciones[i][j].get_simbolo() << "\"];" << endl;
             }
@@ -121,7 +121,7 @@ public:
         set<int> aceptacion;
         vector<vector<Transicion>> d_tran = tabla_transicion(aceptacion);
         set<int> estados;
-        for (int i = 0; i < d_tran.size(); i++) {
+        for (int i = 0; (unsigned)i < d_tran.size(); i++) {
             estados.insert(i);
         }
         set<char> alfabeto = get_alfabeto();
@@ -214,7 +214,7 @@ private:
     //Función auxiliar de tabla_transicion() que nos regresa el índice de el primer
     //estado sin marcar, si ya están procesados todos los estados regresa -1
     int primero_sin_marcar(vector<Destado> &d_estados) {
-        for (int i = 0; i < d_estados.size(); i++) {
+        for (int i = 0; (unsigned)i < d_estados.size(); i++) {
             if (d_estados[i].get_marcado() == false) {
                 return i;
             }
@@ -237,7 +237,7 @@ private:
     //Función auxiliar de tabla_transicion() que indica el índice del conjunto U en 
     //el vector de d_estados, si no topa al conjunto U regresa -1
     int idx_conjunto(set<int> &U, vector<Destado> &d_estados) {
-        for (int i = 0; i < d_estados.size(); i++) {
+        for (int i = 0; (unsigned)i < d_estados.size(); i++) {
             if (d_estados[i].get_conjunto() == U) {
                 return i;
             }
