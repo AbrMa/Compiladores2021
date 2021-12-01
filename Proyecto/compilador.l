@@ -8,7 +8,7 @@ IS			(u|U|l|L)*
 
 %{
 #include <stdio.h>
-#include "y.tab.h"
+#include "compilador.tab.h"
 
 void count();
 %}
